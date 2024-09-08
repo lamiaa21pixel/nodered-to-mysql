@@ -1,0 +1,230 @@
+[
+    {
+        "id": "7f4154cbb0b1e9b5",
+        "type": "tab",
+        "label": "Flux 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "9f4e8c2149f5c04d",
+        "type": "function",
+        "z": "7f4154cbb0b1e9b5",
+        "name": "inserer tag",
+        "func": "msg.topic=\"INSERT INTO fiche_technique(Tag,puissance_kw)\"+\n            \"VALUES('\"+msg.tag+\"','\"+msg.puissance+\"');\";\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 650,
+        "y": 80,
+        "wires": [
+            [
+                "a67a09e7d5ef4446"
+            ]
+        ]
+    },
+    {
+        "id": "a67a09e7d5ef4446",
+        "type": "mysql",
+        "z": "7f4154cbb0b1e9b5",
+        "mydb": "ea2edfa26b6cb116",
+        "name": "",
+        "x": 890,
+        "y": 80,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "1f4f8680b460f0d9",
+        "type": "ui_text_input",
+        "z": "7f4154cbb0b1e9b5",
+        "name": "",
+        "label": "saisir le Tag",
+        "tooltip": "",
+        "group": "2f65e6af801703cb",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "mode": "text",
+        "delay": 300,
+        "topic": "tag",
+        "sendOnBlur": true,
+        "className": "",
+        "topicType": "msg",
+        "x": 130,
+        "y": 160,
+        "wires": [
+            [
+                "243b81c16987294d"
+            ]
+        ]
+    },
+    {
+        "id": "40c41c9cf38f7765",
+        "type": "function",
+        "z": "7f4154cbb0b1e9b5",
+        "name": "int",
+        "func": "// Récupérer la valeur de msg.payload (qui est une chaîne)\nvar stringValue = msg.tag;\n\n// Convertir la chaîne en entier\nvar intValue = parseInt(stringValue, 10);\n\n// Vérifier si la conversion est réussie\nif (!isNaN(intValue)) {\n    msg.tag = intValue; // Mettre à jour msg.payload avec la valeur entière\n    return msg; // Continuer le flux avec la nouvelle valeur\n} else {\n    node.error(\"La valeur saisie n'est pas un entier valide.\"); // Afficher une erreur si la conversion échoue\n    return null; // Ne pas continuer le flux si la conversion échoue\n}\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 450,
+        "y": 80,
+        "wires": [
+            [
+                "9f4e8c2149f5c04d"
+            ]
+        ]
+    },
+    {
+        "id": "1e0a57ac8b199dbb",
+        "type": "ui_button",
+        "z": "7f4154cbb0b1e9b5",
+        "name": "",
+        "group": "2f65e6af801703cb",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "valider",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 150,
+        "y": 80,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "05aee968ec3ed859",
+        "type": "ui_text_input",
+        "z": "7f4154cbb0b1e9b5",
+        "name": "",
+        "label": "saisir le Tag",
+        "tooltip": "",
+        "group": "2f65e6af801703cb",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "mode": "text",
+        "delay": "400",
+        "topic": "puissance",
+        "sendOnBlur": false,
+        "className": "",
+        "topicType": "msg",
+        "x": 130,
+        "y": 260,
+        "wires": [
+            [
+                "c07da435953ca442"
+            ]
+        ]
+    },
+    {
+        "id": "0fc3baa4aa615e27",
+        "type": "function",
+        "z": "7f4154cbb0b1e9b5",
+        "name": "double",
+        "func": "var value = msg.puissance;\n\n// Convertir la chaîne en nombre décimal\nvar decimalValue = parseFloat(value);\n\n// Vérifier si la conversion est réussie\nif (!isNaN(decimalValue)) {\n    msg.puissance = decimalValue; // Mettre à jour msg.payload avec la valeur décimale\n    return msg; // Continuer le flux avec la nouvelle valeur\n} else {\n    node.error(\"La valeur saisie n'est pas un nombre décimal valide.\"); // Afficher une erreur si la conversion échoue\n    return null; // Ne pas continuer le flux si la conversion échoue\n}\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 510,
+        "y": 180,
+        "wires": [
+            [
+                "9f4e8c2149f5c04d"
+            ]
+        ]
+    },
+    {
+        "id": "c07da435953ca442",
+        "type": "function",
+        "z": "7f4154cbb0b1e9b5",
+        "name": "function 1",
+        "func": "// Take the value from msg.payload and assign it to msg.puissance\nmsg.puissance = msg.payload;\n\n// Optionally, if you no longer need msg.payload, you can delete it\n// delete msg.payload;\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 340,
+        "y": 220,
+        "wires": [
+            [
+                "0fc3baa4aa615e27"
+            ]
+        ]
+    },
+    {
+        "id": "243b81c16987294d",
+        "type": "function",
+        "z": "7f4154cbb0b1e9b5",
+        "name": "function 2",
+        "func": "// Take the value from msg.payload and assign it to msg.puissance\nmsg.tag = msg.payload;\n\n// Optionally, if you no longer need msg.payload, you can delete it\n// delete msg.payload;\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 280,
+        "y": 120,
+        "wires": [
+            [
+                "40c41c9cf38f7765"
+            ]
+        ]
+    },
+    {
+        "id": "ea2edfa26b6cb116",
+        "type": "MySQLdatabase",
+        "name": "",
+        "host": "127.0.0.1",
+        "port": "3306",
+        "db": "mobile_app",
+        "tz": "",
+        "charset": "UTF8"
+    },
+    {
+        "id": "2f65e6af801703cb",
+        "type": "ui_group",
+        "name": "fiche technique",
+        "tab": "164ad79b66e44c40",
+        "order": 1,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "164ad79b66e44c40",
+        "type": "ui_tab",
+        "name": "fiche technique moteur",
+        "icon": "dashboard",
+        "order": 1,
+        "disabled": false,
+        "hidden": false
+    }
+]
